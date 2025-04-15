@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% if atleta %}Editar Atleta{% else %}Cadastro de Atleta{% endif %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header>
+    <h1>{% if atleta %}Editar Atleta{% else %}Cadastro de Atleta{% endif %}</h1>
+    {% if atleta %}
+      <h2 class="nome-edicao">Editando: {{ atleta[1] }}</h2>
+    {% endif %}
+    <a href="{{ url_for('index') }}" class="botao-voltar">← Voltar</a>
+  </header>
+
+  <main>
+    <div class="form-container">
+      <form action="{{ url_for('salvar') }}" method="POST" id="formAtleta">
+        {% if atleta %}
+          <input type="hidden" name="editar_id" value="{{ atleta[0] }}">
+        {% endif %}
+
+        <label for="nome">Nome:</label>
+        <input type="text" name="nome" required value="{{ atleta[1] if atleta else '' }}">
+
+        <label for="idade">Idade:</label>
+        <input type="number" name="idade" required value="{{ atleta[2] if atleta else '' }}">
+
+        <label for="tempo_treino">Tempo de treino (anos):</label>
+        <input type="number" step="0.1" name="tempo_treino" required value="{{ atleta[3] if atleta else '' }}">
+
+        <div id="categorias">
+          {% set total_categorias = 5 %}
+          {% for i in range(1, total_categorias + 1) %}
+            {% set base = 3 + (i - 1) * 3 %}
+            {% set existe_categoria = atleta and atleta[base + 1] %}
+            {% if not atleta and i == 1 or existe_categoria %}
+              <fieldset class="categoria-field" data-index="{{ i }}">
+                <legend>Categoria {{ i }}</legend>
+
+                <label>Modalidade:</label>
+                <select name="categoria{{ i }}">
+                  <option value="">-- Selecione uma categoria --</option>
+                  {% for op in ['Armas Duplas/Articuladas', 'Combinados Mãos Livres', 'Combinados Armas',
+                                'Grupos Mãos Livres', 'Grupos Armas', 'Sanda', 'Shuai Jiao', 'TaiJiQuan'] %}
+                    <option value="{{ op }}" {% if atleta and atleta[base + 1] == op %}selected{% endif %}>{{ op }}</option>
+                  {% endfor %}
+                </select>
+
+                <label>Nota (0 a 10):</label>
+                <input type="number" step="0.01" min="0" max="10" name="nota{{ i }}"
+                       value="{{ '%.2f'|format(atleta[base + 2]) if atleta and atleta[base + 2] is not none else '' }}">
+
+                <label>Classificação:</label>
+                <select name="classificacao{{ i }}">
+                  <option value="">-- Selecione --</option>
+                  {% for op in ['Campeão', 'Prata', 'Bronze'] %}
+                    <option value="{{ op }}" {% if atleta and atleta[base + 3] == op %}selected{% endif %}>{{ op }}</option>
+                  {% endfor %}
+                </select>
+
+                <button type="button" class="remover-categoria" onclick="removerCategoria(this)">🗑️ Remover Categoria</button>
+              </fieldset>
+            {% endif %}
+          {% endfor %}
+        </div>
+
+        <button type="button" id="adicionarCategoria">+ Adicionar Categoria</button>
+        <button type="submit" style="margin-top: 1rem;">{% if atleta %}Atualizar{% else %}Salvar{% endif %}</button>
+      </form>
+    </div>
+  </main>
+
+  <script>
+    function removerCategoria(btn) {
+      const fieldset = btn.closest(".categoria-field");
+      if (fieldset) fieldset.remove();
+    }
+
+    const maxCategorias = 5;
+    let categoriaAtual = document.querySelectorAll(".categoria-field").length;
+
+    document.getElementById("adicionarCategoria").addEventListener("click", () => {
+      if (categoriaAtual >= maxCategorias) return alert("Máximo de 5 categorias.");
+      categoriaAtual++;
+
+      const div = document.createElement("fieldset");
+      div.className = "categoria-field";
+      div.setAttribute("data-index", categoriaAtual);
+      div.innerHTML = `
+        <legend>Categoria ${categoriaAtual}</legend>
+
+        <label>Modalidade:</label>
+        <select name="categoria${categoriaAtual}">
+          <option value="">-- Selecione uma categoria --</option>
+          <option>Armas Duplas/Articuladas</option>
+          <option>Combinados Mãos Livres</option>
+          <option>Combinados Armas</option>
+          <option>Grupos Mãos Livres</option>
+          <option>Grupos Armas</option>
+          <option>Sanda</option>
+          <option>Shuai Jiao</option>
+          <option>TaiJiQuan</option>
+        </select>
+
+        <label>Nota (0 a 10):</label>
+        <input type="number" step="0.01" min="0" max="10" name="nota${categoriaAtual}">
+
+        <label>Classificação:</label>
+        <select name="classificacao${categoriaAtual}">
+          <option value="">-- Selecione --</option>
+          <option>Campeão</option>
+          <option>Prata</option>
+          <option>Bronze</option>
+        </select>
+
+        <button type="button" class="remover-categoria" onclick="removerCategoria(this)">🗑️ Remover Categoria</button>
+      `;
+      document.getElementById("categorias").appendChild(div);
+    });
+  </script>
+</body>
+</html>

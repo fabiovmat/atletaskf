@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Atletas Cadastrados</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header>
+    <h1>Atletas Cadastrados</h1>
+    <a href="{{ url_for('cadastro') }}" class="botao-cadastrar">Cadastrar novo atleta</a>
+  </header>
+
+  <main>
+    <div class="aluno-grid">
+      {% for atleta in atletas %}
+      <div class="atleta-card" onclick="abrirModal({{ atleta[0] }})">
+        <img src="{{ url_for('static', filename='avatar.png') }}" class="avatar" alt="Avatar">
+        <h3>{{ atleta[1] }}</h3>
+      </div>
+      {% endfor %}
+    </div>
+  </main>
+
+  <!-- Modal -->
+  <div id="modal" class="modal" onclick="fecharModal(event)">
+    <div class="modal-conteudo" id="modalConteudo">
+      <div id="loader" class="loader" style="display:none;"></div>
+
+      <span class="fechar" onclick="fecharModal(event)">&times;</span>
+      <div class="modal-header">
+        <img src="{{ url_for('static', filename='avatar.png') }}" class="avatar-modal" alt="Avatar">
+        <h2 id="modalNome"></h2>
+      </div>
+      <p><strong>Idade:</strong> <span id="modalIdade"></span></p>
+      <p><strong>Tempo de treino:</strong> <span id="modalTreino"></span> anos</p>
+      <div id="modalCategorias"></div>
+      <div class="acoes">
+        <a href="#" class="botao-editar" id="modalEditar" title="Editar">✏️ Editar</a>
+        <form id="modalDeletar" method="post" style="display:inline;">
+          <button type="submit" class="botao-deletar" title="Deletar">🗑️ Deletar</button>
+        </form>
+      </div>
+      
+      
+    </div>
+  </div>
+
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
