@@ -1,0 +1,8 @@
+id;nome;idade;tempo_treino;categoria1;nota1;classificacao1;categoria2;nota2;classificacao2;categoria3;nota3;classificacao3;categoria4;nota4;classificacao4;categoria5;nota5;classificacao5
+2;fabio;32;23.00;Armas Duplas/Articuladas;9.80;Prata;Combinados Armas;5.00;Bronze;"";;"";"";;"";"";;""
+1;João Silva;22;4.50;Sanda;9.75;Campeão;TaiJiQuan;8.50;Prata;Combinados Armas;7.25;Bronze;Armas Duplas/Articuladas;;"";;;
+3;Lucas Silva;22;3.50;Sanda;9.80;Campeão;TaiJiQuan;8.50;Prata;Combinados Armas;7.75;Bronze;;;;;;
+4;Ana Oliveira;19;2.00;Shuai Jiao;8.90;Campeão;Grupos Mãos Livres;8.60;Prata;;;;;;;;;
+5;Gabriel Costa;26;6.20;Armas Duplas/Articuladas;9.95;Campeão;Grupos Armas;9.60;Campeão;Sanda;8.80;Prata;Combinados Mãos Livres;8.50;Bronze;;;
+6;Juliana Freitas;17;1.20;Combinados Armas;7.60;Bronze;TaiJiQuan;8.10;Prata;;;;;;;;;
+7;Vinícius Rocha;30;10.00;Sanda;9.90;Campeão;Shuai Jiao;9.85;Campeão;Grupos Armas;9.70;Prata;Combinados Mãos Livres;8.90;Prata;TaiJiQuan;8.00;Bronze
